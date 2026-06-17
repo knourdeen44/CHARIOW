@@ -38,7 +38,7 @@ $("#modal").addEventListener("click", (e) => {
 });
 
 // ---------- État ----------
-let state = { products: [], sales: [], messages: [], queue: {}, activity: [] };
+let state = { products: [], sales: [], messages: [], queue: {}, activity: [], store: {} };
 
 async function loadAll() {
   state.products = await Store.get("products");
@@ -46,7 +46,27 @@ async function loadAll() {
   state.messages = await Store.get("messages");
   state.queue = await Store.get("queue");
   state.activity = await Store.get("activity");
+  state.store = await Store.get("store");
   if (!Array.isArray(state.activity)) state.activity = [];
+  if (Array.isArray(state.store) || !state.store) state.store = {};
+}
+
+// Personnalise l'en-tête et le mémo avec la vraie boutique Chariow
+function renderStore() {
+  const s = state.store || {};
+  if (s.name) {
+    $("#storeName").textContent = s.name;
+    $("#storeLine").textContent = "Tableau de bord — pub & gestion automatisées";
+    document.title = s.name + " — Tableau de bord";
+  }
+  const memo = $("#memoStore");
+  if (memo) {
+    if (s.url) {
+      memo.innerHTML = `Ta boutique : <a href="${escapeHtml(s.url)}" target="_blank" rel="noopener" class="text-brand-700 underline font-medium">${escapeHtml(s.name || s.url)}</a>`;
+    } else {
+      memo.textContent = "Boutique pas encore connectée — ajoute le secret CHARIOW_API_KEY (voir README).";
+    }
+  }
 }
 
 function logActivity(action) {
@@ -75,7 +95,11 @@ $("#tabs").addEventListener("click", (e) => {
 function renderProducts() {
   const el = $("#productsList");
   if (!state.products.length) {
-    el.innerHTML = `<p class="text-slate-400 text-sm">Aucun produit. Clique « Ajouter ».</p>`;
+    el.innerHTML = `<div class="sm:col-span-2 bg-white rounded-xl border border-dashed p-6 text-center">
+      <p class="text-3xl mb-2">🛍️</p>
+      <p class="font-medium">Aucun produit pour l'instant</p>
+      <p class="text-sm text-slate-500 mt-1">Dès que tu <b>publies un produit sur Chariow</b>, il apparaît ici automatiquement. Tu peux aussi en ajouter un à la main avec « + Ajouter ».</p>
+    </div>`;
     return;
   }
   el.innerHTML = state.products
@@ -199,7 +223,7 @@ function renderSales() {
           <div class="bg-slate-100 rounded-full h-3"><div class="bg-brand-600 h-3 rounded-full" style="width:${w}%"></div></div>
         </div>`;
       })
-      .join("") || `<p class="text-slate-400 text-sm">Aucune vente.</p>`;
+      .join("") || `<p class="text-slate-400 text-sm">Aucune vente pour l'instant — tes ventes Chariow s'afficheront ici dès la première commande.</p>`;
 
   $("#salesList").innerHTML =
     [...state.sales]
@@ -482,6 +506,7 @@ $$("[data-export]").forEach((btn) => {
 
 // ---------- INIT ----------
 function renderAll() {
+  renderStore();
   renderProducts();
   fillProductSelect();
   renderSales();

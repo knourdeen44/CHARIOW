@@ -1,32 +1,7 @@
 {
-  "genereLe": "2026-06-17T23:25:38.194Z",
-  "source": "openrouter",
-  "publicationsDuJour": [
-    {
-      "jour": "2026-06-17",
-      "plateforme": "Facebook",
-      "produitId": "p2",
-      "angle": "témoignage",
-      "mode": "IA",
-      "accroche": "« Grâce à Gestion Boutique Vêtements, mon magasin a doublé ses ventes en un mois ! »",
-      "corps": "Mariam, propriétaire d'une boutique à Bamako, raconte : « Avant, je perdais du temps à gérer les tailles, les modèles et les marges. Avec le logiciel, je contrôle tout : déclinaisons, achats fournisseurs et marges par article, le tout pour seulement 5 000 FCFA. Mes clients trouvent toujours ce qu'ils cherchent, et mes profits augmentent ! »",
-      "cta": "Essayez dès aujourd'hui et transformez votre boutique",
-      "texteEcran": "Gestion Boutique Vêtements – Tout le contrôle pour 5 000 FCFA",
-      "ideeVisuel": "Photo de Mariam souriante dans sa boutique, entourée de rangées de vêtements bien organisés, avec une capture d'écran du tableau de bord du logiciel affichant les marges et les tailles."
-    },
-    {
-      "jour": "2026-06-17",
-      "plateforme": "TikTok",
-      "produitId": "p1",
-      "angle": "démo",
-      "mode": "IA",
-      "accroche": "🚀 Découvrez le pouvoir d'Excel Business Manager FCFA en 30 secondes !",
-      "corps": "Vous êtes commerçant ? Gérez stock, ventes, dépenses, bénéfices et clients depuis une seule feuille Excel. Simple, rapide et 100 % adapté au marché en FCFA. Testez-le maintenant et voyez la différence !",
-      "cta": "Obtenez votre tableau de bord complet pour seulement 5 000 FCFA – Cliquez ici !",
-      "texteEcran": "Excel Business Manager FCFA – Tout votre commerce, sous contrôle, en un clic.",
-      "ideeVisuel": "Vidéo TikTok de 30 s : écran partagé montrant d'un côté un commerce désordonné, de l'autre le tableau de bord Excel qui se remplit automatiquement (stock, ventes, bénéfices). Musique entraînante, texte qui apparaît « Avant » / « Après » et bouton « Acheter maintenant » en fin de vidéo."
-    }
-  ],
+  "genereLe": null,
+  "source": null,
+  "publicationsDuJour": [],
   "relancesProposees": [],
   "plan": null
 }

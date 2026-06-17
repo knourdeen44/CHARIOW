@@ -86,6 +86,15 @@ async function main() {
   const store = await getStore().catch(() => ({}));
   if (store?.name) console.log("   Boutique :", store.name, store.url ? "(" + store.url + ")" : "");
 
+  // Mémorise les infos de la boutique (nom + lien) pour personnaliser le site
+  if (store?.name || store?.url) {
+    await writeJSON("store.json", {
+      name: store.name || "",
+      url: store.url || "",
+      logo_url: store.logo_url || null,
+    });
+  }
+
   // 0) Si la boutique n'a encore aucun produit publié, on NE touche À RIEN
   //    (on évite d'effacer les données d'exemple / la dernière synchro par du vide).
   const rawProductsCheck = await listProducts();

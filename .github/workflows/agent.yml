@@ -40,7 +40,7 @@ jobs:
         run: |
           git config user.name "agent-chariow[bot]"
           git config user.email "actions@github.com"
-          git add data/products.json data/sales.json data/queue.json data/activity.json
+          git add data/products.json data/sales.json data/queue.json data/activity.json data/store.json
           if git diff --staged --quiet; then
             echo "Aucun changement à commiter."
           else
