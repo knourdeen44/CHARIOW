@@ -102,13 +102,17 @@ async function main() {
     console.log("ℹ️  Aucun produit PUBLIÉ sur Chariow pour le moment.");
     console.log("    -> Données existantes conservées (rien n'est écrasé).");
     console.log("    -> Publie au moins un produit sur Chariow, puis relance la synchro.");
+    // Anti-doublon : on n'ajoute pas la même ligne "0 produit" si elle est déjà en tête.
     const activity = await readJSON("activity.json", []);
-    activity.unshift({
-      date: new Date().toISOString(),
-      acteur: "agent",
-      action: "Synchro Chariow : boutique connectée (" + (store?.name || "?") + ") mais 0 produit publié — données conservées.",
-    });
-    await writeJSON("activity.json", activity.slice(0, 200));
+    const dejaSignale = activity[0]?.action?.includes("0 produit publié");
+    if (!dejaSignale) {
+      activity.unshift({
+        date: new Date().toISOString(),
+        acteur: "agent",
+        action: "Synchro Chariow : boutique connectée (" + (store?.name || "?") + ") mais 0 produit publié — données conservées.",
+      });
+      await writeJSON("activity.json", activity.slice(0, 200));
+    }
     return;
   }
 
