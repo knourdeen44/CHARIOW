@@ -86,6 +86,23 @@ async function main() {
   const store = await getStore().catch(() => ({}));
   if (store?.name) console.log("   Boutique :", store.name, store.url ? "(" + store.url + ")" : "");
 
+  // 0) Si la boutique n'a encore aucun produit publié, on NE touche À RIEN
+  //    (on évite d'effacer les données d'exemple / la dernière synchro par du vide).
+  const rawProductsCheck = await listProducts();
+  if (rawProductsCheck.length === 0) {
+    console.log("ℹ️  Aucun produit PUBLIÉ sur Chariow pour le moment.");
+    console.log("    -> Données existantes conservées (rien n'est écrasé).");
+    console.log("    -> Publie au moins un produit sur Chariow, puis relance la synchro.");
+    const activity = await readJSON("activity.json", []);
+    activity.unshift({
+      date: new Date().toISOString(),
+      acteur: "agent",
+      action: "Synchro Chariow : boutique connectée (" + (store?.name || "?") + ") mais 0 produit publié — données conservées.",
+    });
+    await writeJSON("activity.json", activity.slice(0, 200));
+    return;
+  }
+
   // 1) Ventes (sert aussi à compter les ventes par produit)
   const rawSales = await listSales();
   console.log("   Ventes récupérées :", rawSales.length);
@@ -96,8 +113,8 @@ async function main() {
     if (s.productId) ventesParProduit[s.productId] = (ventesParProduit[s.productId] || 0) + s.quantite;
   });
 
-  // 2) Produits
-  const rawProducts = await listProducts();
+  // 2) Produits (déjà récupérés à l'étape 0)
+  const rawProducts = rawProductsCheck;
   console.log("   Produits récupérés :", rawProducts.length);
   let products = rawProducts.map((p) => mapProduct(p, ventesParProduit));
 

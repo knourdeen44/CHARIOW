@@ -35,17 +35,19 @@ async function api(path, params = {}) {
 }
 
 // Récupère TOUTES les pages d'un endpoint de liste (suit le curseur).
-// Réponse Chariow : { data: { data: [...], pagination: { has_more, next_cursor } } }
+// Réponse Chariow réelle : { data: [...], pagination: { has_more_pages, next_cursor } }
+// (on gère aussi un éventuel format imbriqué { data: { data: [...], pagination } } par sécurité)
 async function listAll(path, params = {}) {
   const out = [];
   let cursor;
   let guard = 0; // sécurité anti-boucle infinie
   do {
     const body = await api(path, { per_page: 100, cursor, ...params });
-    const page = body?.data?.data || [];
+    const page = Array.isArray(body?.data) ? body.data : body?.data?.data || [];
     out.push(...page);
-    const pg = body?.data?.pagination || {};
-    cursor = pg.has_more ? pg.next_cursor : null;
+    const pg = body?.pagination || body?.data?.pagination || {};
+    const more = pg.has_more_pages ?? pg.has_more ?? false;
+    cursor = more ? pg.next_cursor : null;
   } while (cursor && ++guard < 100);
   return out;
 }
