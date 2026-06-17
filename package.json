@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "agent": "node agent/run.js",
+    "sync": "node agent/sync-chariow.js",
     "serve": "node serve.js"
   },
   "engines": { "node": ">=18" },

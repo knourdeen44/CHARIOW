@@ -66,6 +66,31 @@ L'agent écrit le contenu du jour dans `data/queue.json` et ajoute une ligne dan
 
 ---
 
+## 2 bis) 🛒 Connecter ta vraie boutique Chariow (produits + ventes réels)
+
+Le site peut afficher tes **vrais produits** et tes **vraies ventes** Chariow, mis à jour automatiquement.
+
+> Comment ça marche (et pourquoi c'est sûr) : la clé API Chariow est **secrète**. On ne la met **jamais** dans le site (qui est public). C'est **GitHub Actions** (le robot) qui appelle Chariow côté serveur avec la clé, récupère tes données, et les écrit dans `data/products.json` et `data/sales.json`. Le site lit ensuite ces fichiers.
+
+### Obtenir ta clé API Chariow
+1. Connecte-toi sur **https://app.chariow.com**.
+2. Va dans **Paramètres → Clés API** (API Keys).
+3. Crée une clé (format `sk_live_...`) et copie-la.
+
+### Brancher la clé
+- **En ligne (recommandé)** : sur GitHub → **Settings → Secrets and variables → Actions → New repository secret** → Nom : `CHARIOW_API_KEY`, Valeur : ta clé `sk_live_...`.
+- **En local (pour tester)** : mets-la dans `.env`, puis lance :
+
+```bash
+npm run sync
+```
+
+Tu verras dans le terminal le nombre de produits et de ventes récupérés. Les fichiers `data/products.json` et `data/sales.json` sont alors remplis avec tes vraies données.
+
+> La synchro tourne **toute seule toutes les 6 heures** une fois le secret ajouté (et à chaque « Run workflow » manuel). Les paniers abandonnés / paiements en attente sont aussi récupérés comme **relances possibles** (dans `data/queue.json`).
+
+---
+
 ## 3) 🌍 Déployer gratuitement (GitHub Pages)
 
 1. Crée un compte sur **https://github.com** (gratuit).
@@ -127,7 +152,9 @@ Deux façons :
 - [ ] Onglet **Ventes** : j'ajoute une vente, le graphique se met à jour
 - [ ] Onglet **Générateur pub** : un clic génère une pub (sans IA, ça marche aussi)
 - [ ] Onglet **Réglages** : je colle ma clé OpenRouter → badge « 🤖 IA activée »
+- [ ] `npm run sync` (avec clé Chariow dans `.env`) remplit `data/products.json` et `data/sales.json` avec mes vraies données
 - [ ] `npm run agent` (avec `.env`) écrit dans `data/queue.json` et `data/activity.json`
+- [ ] Secret `CHARIOW_API_KEY` ajouté sur GitHub (synchro automatique des ventes)
 - [ ] Sur GitHub : Pages est activé, le site est en ligne
 - [ ] Secret `OPENROUTER_API_KEY` ajouté, le workflow **Actions** tourne
 - [ ] **Aucune clé** n'apparaît dans le code (vérifie : elle est dans Réglages / .env / Secret seulement)
