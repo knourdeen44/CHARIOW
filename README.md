@@ -91,6 +91,18 @@ Tu verras dans le terminal le nombre de produits et de ventes récupérés. Les 
 
 ---
 
+## 2 ter) 🖼️ Générer des images de pub (gratuit, sans clé)
+
+Dans l'onglet **✨ Générateur pub**, après avoir généré le texte, clique **🖼️ Générer le visuel**.
+- C'est **100 % gratuit et sans clé** (service Pollinations.ai), directement dans le site.
+- L'image est au bon format selon la plateforme (vertical 9:16 pour TikTok/Status, carré pour Facebook).
+- Boutons **⬇️ Télécharger** et **🔄 Une autre image**.
+- Astuce : ces modèles écrivent mal le texte. Le visuel sert de **fond** ; ajoute ton accroche/CTA par-dessus dans Canva ou l'éditeur de TikTok (le texte est déjà prêt à copier juste au-dessus).
+
+> 🎬 **Vidéo** : il n'existe pas (en 2026) d'API vidéo à la fois gratuite, sans compte et utilisable depuis un site statique. Voir avec le développeur les options (diaporama vidéo dans le navigateur, ou service à crédits offerts via GitHub Actions).
+
+---
+
 ## 3) 🌍 Déployer gratuitement (GitHub Pages)
 
 1. Crée un compte sur **https://github.com** (gratuit).

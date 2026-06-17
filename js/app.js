@@ -320,8 +320,43 @@ $("#genAd").onclick = async () => {
     <hr class="my-3" />
     <p class="text-xs text-slate-500">🖼️ Texte à l'écran : <b>${escapeHtml(ad.texteEcran)}</b></p>
     <p class="text-xs text-slate-500">🎬 Idée de visuel : ${escapeHtml(ad.ideeVisuel)}</p>
+    <hr class="my-3" />
+    <div class="flex items-center gap-2 flex-wrap">
+      <button id="genImg" class="bg-brand-600 hover:bg-brand-700 text-white text-sm px-3 py-2 rounded-lg">🖼️ Générer le visuel (gratuit)</button>
+      <span class="text-xs text-slate-400">image au format ${Media.sizeFor(plateforme).h > Media.sizeFor(plateforme).w ? "vertical 9:16" : "carré"}</span>
+    </div>
+    <div id="imgBox" class="mt-3"></div>
   </div>`;
   $("#copyAd").onclick = () => copy(full);
+
+  // Génération d'image (Pollinations, gratuit, sans clé)
+  const prompt = Media.buildPrompt(ad, p);
+  function showImage(seed) {
+    const url = Media.imageUrl(prompt, plateforme, seed);
+    const ib = $("#imgBox");
+    ib.innerHTML = `<p class="text-sm text-slate-500">Génération de l'image… (10-20 s)</p>`;
+    const img = new Image();
+    img.onload = () => {
+      ib.innerHTML = "";
+      img.className = "rounded-lg border max-w-full w-72";
+      ib.appendChild(img);
+      const actions = document.createElement("div");
+      actions.className = "flex gap-3 mt-2 text-sm";
+      actions.innerHTML = `<a href="${url}" download="visuel-${p.id}.jpg" target="_blank" class="text-brand-700">⬇️ Télécharger</a>
+        <button id="regenImg" class="text-amber-500">🔄 Une autre image</button>`;
+      ib.appendChild(actions);
+      $("#regenImg").onclick = () => showImage(Math.floor(Math.random() * 1e6));
+    };
+    img.onerror = () => {
+      ib.innerHTML = `<p class="text-sm text-red-600">Service image momentanément indisponible. Réessaie dans un instant.</p>`;
+    };
+    img.src = url;
+  }
+  $("#genImg").onclick = () => {
+    showImage();
+    logActivity(`Visuel généré pour ${p.nom} — ${plateforme}`);
+  };
+
   logActivity(`Pub générée (${mode}) pour ${p.nom} — ${plateforme}/${angle}`);
 };
 
