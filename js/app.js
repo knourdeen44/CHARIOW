@@ -323,9 +323,15 @@ $("#genAd").onclick = async () => {
     <hr class="my-3" />
     <div class="flex items-center gap-2 flex-wrap">
       <button id="genImg" class="bg-brand-600 hover:bg-brand-700 text-white text-sm px-3 py-2 rounded-lg">🖼️ Générer le visuel (gratuit)</button>
-      <span class="text-xs text-slate-400">image au format ${Media.sizeFor(plateforme).h > Media.sizeFor(plateforme).w ? "vertical 9:16" : "carré"}</span>
+      <button id="genVid" class="bg-amber-500 hover:brightness-95 text-white text-sm px-3 py-2 rounded-lg">🎬 Créer la vidéo (gratuit)</button>
+      <span class="text-xs text-slate-400">format ${Media.sizeFor(plateforme).h > Media.sizeFor(plateforme).w ? "vertical 9:16" : "carré"}</span>
     </div>
     <div id="imgBox" class="mt-3"></div>
+    <label class="block text-xs text-slate-500 mt-3">Image de fond de la vidéo (facultatif — sinon fond animé) :
+      <input id="vidBg" type="file" accept="image/*" class="mt-1 block text-xs" />
+      <span class="text-slate-400">Astuce : télécharge d'abord le visuel ci-dessus, puis sélectionne-le ici.</span>
+    </label>
+    <div id="vidBox" class="mt-2"></div>
   </div>`;
   $("#copyAd").onclick = () => copy(full);
 
@@ -355,6 +361,37 @@ $("#genAd").onclick = async () => {
   $("#genImg").onclick = () => {
     showImage();
     logActivity(`Visuel généré pour ${p.nom} — ${plateforme}`);
+  };
+
+  // Génération de vidéo (diaporama animé, gratuit, dans le navigateur)
+  $("#genVid").onclick = async () => {
+    const vb = $("#vidBox");
+    if (!Video.supported()) {
+      vb.innerHTML = `<p class="text-sm text-red-600">Ton navigateur ne sait pas créer la vidéo. Essaie avec Google Chrome.</p>`;
+      return;
+    }
+    vb.innerHTML = `<p class="text-sm text-slate-500">Création de la vidéo… <span id="vidPct">0</span>% (≈ 10 s)</p>`;
+    try {
+      const bgImageFile = $("#vidBg")?.files?.[0] || null;
+      const lines = [ad.accroche, ad.corps, ad.cta].filter(Boolean);
+      const blob = await Video.create({
+        lines,
+        texteEcran: ad.texteEcran,
+        plateforme,
+        bgImageFile,
+        onProgress: (pct) => {
+          const el = $("#vidPct");
+          if (el) el.textContent = pct;
+        },
+      });
+      const url = URL.createObjectURL(blob);
+      vb.innerHTML = `<video src="${url}" controls class="rounded-lg border w-72 max-w-full"></video>
+        <div class="mt-2 text-sm"><a href="${url}" download="pub-${p.id}.webm" class="text-brand-700">⬇️ Télécharger la vidéo</a></div>
+        <p class="text-xs text-slate-400 mt-1">Format .webm — lisible sur téléphone, à uploader dans TikTok / Status.</p>`;
+      logActivity(`Vidéo générée pour ${p.nom} — ${plateforme}`);
+    } catch (e) {
+      vb.innerHTML = `<p class="text-sm text-red-600">Impossible de créer la vidéo : ${escapeHtml(e.message)}. Réessaie.</p>`;
+    }
   };
 
   logActivity(`Pub générée (${mode}) pour ${p.nom} — ${plateforme}/${angle}`);

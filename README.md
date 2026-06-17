@@ -99,7 +99,14 @@ Dans l'onglet **✨ Générateur pub**, après avoir généré le texte, clique 
 - Boutons **⬇️ Télécharger** et **🔄 Une autre image**.
 - Astuce : ces modèles écrivent mal le texte. Le visuel sert de **fond** ; ajoute ton accroche/CTA par-dessus dans Canva ou l'éditeur de TikTok (le texte est déjà prêt à copier juste au-dessus).
 
-> 🎬 **Vidéo** : il n'existe pas (en 2026) d'API vidéo à la fois gratuite, sans compte et utilisable depuis un site statique. Voir avec le développeur les options (diaporama vidéo dans le navigateur, ou service à crédits offerts via GitHub Actions).
+### 🎬 Créer une vidéo de pub (gratuit, dans le navigateur)
+Toujours dans **✨ Générateur pub**, clique **🎬 Créer la vidéo**.
+- Génère une courte vidéo verticale (≈10 s, format TikTok/Status) avec **texte animé** sur un **fond animé aux couleurs de ta marque**. 100 % gratuit, sans clé.
+- **Facultatif** : ajoute une **image de fond** (télécharge d'abord le visuel, puis sélectionne-le dans « Image de fond ») — un fichier local marche parfaitement.
+- Bouton **⬇️ Télécharger la vidéo** (.webm). À uploader ensuite dans TikTok / WhatsApp Status.
+- Marche mieux sur **Google Chrome** (l'enregistrement vidéo n'est pas dispo sur tous les navigateurs).
+
+> ℹ️ Les images IA en ligne (Pollinations) s'affichent mais ne peuvent pas être enregistrées directement dans la vidéo (blocage anti-bot/CORS). D'où le fond animé par défaut + l'option « déposer ton image ».
 
 ---
 
