@@ -103,9 +103,10 @@ async function main() {
 
   // Conserve le plan hebdo existant s'il y en a un
   const prevQueue = await readJSON("queue.json", {});
+  const aUtiliseIA = publicationsDuJour.some((p) => p.mode === "IA");
   const queue = {
     genereLe: new Date().toISOString(),
-    source: hasKey() ? "openrouter" : "repli",
+    source: aUtiliseIA ? "openrouter" : "repli",
     publicationsDuJour,
     relancesProposees: prevQueue.relancesProposees || [],
     plan: prevQueue.plan || null,

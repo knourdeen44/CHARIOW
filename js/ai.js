@@ -10,19 +10,19 @@
 
 const AI = (() => {
   const ENDPOINT = "https://openrouter.ai/api/v1/chat/completions";
-  // Modèle gratuit par défaut sur OpenRouter (modifiable dans Réglages).
-  const DEFAULT_MODEL = "meta-llama/llama-3.3-70b-instruct:free";
+  // Cascade de modèles gratuits : si l'un est saturé (429), on bascule sur le suivant.
+  const FREE_MODELS = [
+    "openai/gpt-oss-120b:free",
+    "google/gemma-4-31b-it:free",
+    "openai/gpt-oss-20b:free",
+    "meta-llama/llama-3.3-70b-instruct:free",
+  ];
 
   function hasKey() {
     return !!Store.settings.get("openrouter_key");
   }
 
-  // Appel générique au modèle. Retourne le texte, ou lève une erreur claire.
-  async function chat(systemPrompt, userPrompt) {
-    const key = Store.settings.get("openrouter_key");
-    if (!key) throw new Error("NO_KEY");
-
-    const model = Store.settings.get("openrouter_model", DEFAULT_MODEL);
+  async function callModel(key, model, systemPrompt, userPrompt) {
     const res = await fetch(ENDPOINT, {
       method: "POST",
       headers: {
@@ -42,13 +42,33 @@ const AI = (() => {
     });
 
     if (res.status === 401) throw new Error("Clé API invalide. Vérifie ta clé OpenRouter dans Réglages.");
-    if (res.status === 429) throw new Error("Quota gratuit atteint pour le moment. Réessaie plus tard ou change de modèle.");
-    if (!res.ok) throw new Error("Erreur IA (" + res.status + "). Réessaie ou utilise le mode sans IA.");
+    if (res.status === 429) throw new Error("RATE_LIMIT");
+    if (!res.ok) throw new Error("Erreur IA (" + res.status + ").");
 
     const data = await res.json();
     const txt = data?.choices?.[0]?.message?.content?.trim();
-    if (!txt) throw new Error("Réponse IA vide. Réessaie.");
+    if (!txt) throw new Error("Réponse IA vide.");
     return txt;
+  }
+
+  // Appel générique : essaie le modèle perso (Réglages) puis la cascade gratuite.
+  async function chat(systemPrompt, userPrompt) {
+    const key = Store.settings.get("openrouter_key");
+    if (!key) throw new Error("NO_KEY");
+
+    const custom = Store.settings.get("openrouter_model");
+    const models = [custom, ...FREE_MODELS].filter(Boolean);
+    let lastErr;
+    for (const model of models) {
+      try {
+        return await callModel(key, model, systemPrompt, userPrompt);
+      } catch (e) {
+        lastErr = e;
+        if (e.message === "RATE_LIMIT") continue;
+        throw e;
+      }
+    }
+    throw new Error("Tous les modèles gratuits sont saturés. Réessaie dans un instant.");
   }
 
   // --- Prompts métier -------------------------------------------------------
