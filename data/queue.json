@@ -1,5 +1,5 @@
 {
-  "genereLe": "2026-06-17T23:24:24.886Z",
+  "genereLe": "2026-06-17T23:25:38.194Z",
   "source": "openrouter",
   "publicationsDuJour": [
     {
@@ -8,11 +8,11 @@
       "produitId": "p2",
       "angle": "témoignage",
       "mode": "IA",
-      "accroche": "« J’ai doublé mes ventes en un mois grâce à Gestion Boutique Vêtements ! »",
-      "corps": "Depuis que je gère ma boutique avec cet outil, je contrôle les tailles, les modèles et les achats fournisseurs en un clic. Chaque article indique sa marge, je sais exactement ce qui se vend le mieux et je fixe les prix au bon moment. Tout ça pour seulement 5 000 FCFA !",
-      "cta": "Essayez dès aujourd’hui et voyez la différence",
-      "texteEcran": "Gestion Boutique Vêtements – Le secret des boutiques qui cartonnent",
-      "ideeVisuel": "Photo d’une vendeuse souriante devant son magasin, affichant son tableau de ventes sur un ordinateur portable, avec le texte du témoignage en superposition et le prix bien en vue."
+      "accroche": "« Grâce à Gestion Boutique Vêtements, mon magasin a doublé ses ventes en un mois ! »",
+      "corps": "Mariam, propriétaire d'une boutique à Bamako, raconte : « Avant, je perdais du temps à gérer les tailles, les modèles et les marges. Avec le logiciel, je contrôle tout : déclinaisons, achats fournisseurs et marges par article, le tout pour seulement 5 000 FCFA. Mes clients trouvent toujours ce qu'ils cherchent, et mes profits augmentent ! »",
+      "cta": "Essayez dès aujourd'hui et transformez votre boutique",
+      "texteEcran": "Gestion Boutique Vêtements – Tout le contrôle pour 5 000 FCFA",
+      "ideeVisuel": "Photo de Mariam souriante dans sa boutique, entourée de rangées de vêtements bien organisés, avec une capture d'écran du tableau de bord du logiciel affichant les marges et les tailles."
     },
     {
       "jour": "2026-06-17",
@@ -20,11 +20,11 @@
       "produitId": "p1",
       "angle": "démo",
       "mode": "IA",
-      "accroche": "🚀 Découvrez le nouveau tableau de bord Excel Business Manager – votre commerce au bout des doigts !",
-      "corps": "En 30 secondes, voyez comment gérer stock, ventes, dépenses, bénéfices et clients sans prise de tête. Tout est automatisé, visualisable et ultra simple. Idéal pour les petits commerçants qui veulent gagner du temps et de l'argent.",
-      "cta": "Essayez la démo GRATUITE maintenant – seulement 5 000 FCFA pour le pack complet !",
-      "texteEcran": "Excel Business Manager – Le tableau de bord tout‑en‑un pour votre commerce en FCFA",
-      "ideeVisuel": "Vidéo TikTok d'un écran d'ordinateur partagé en deux : à gauche, un commerçant débordé avec des papiers; à droite, le même commerçant sourire, montrant le tableau de bord Excel qui se remplit automatiquement (stock, ventes, profits). Ajoutez des pop‑ups animés indiquant les gains de temps et le prix 5 000 FCFA."
+      "accroche": "🚀 Découvrez le pouvoir d'Excel Business Manager FCFA en 30 secondes !",
+      "corps": "Vous êtes commerçant ? Gérez stock, ventes, dépenses, bénéfices et clients depuis une seule feuille Excel. Simple, rapide et 100 % adapté au marché en FCFA. Testez-le maintenant et voyez la différence !",
+      "cta": "Obtenez votre tableau de bord complet pour seulement 5 000 FCFA – Cliquez ici !",
+      "texteEcran": "Excel Business Manager FCFA – Tout votre commerce, sous contrôle, en un clic.",
+      "ideeVisuel": "Vidéo TikTok de 30 s : écran partagé montrant d'un côté un commerce désordonné, de l'autre le tableau de bord Excel qui se remplit automatiquement (stock, ventes, bénéfices). Musique entraînante, texte qui apparaît « Avant » / « Après » et bouton « Acheter maintenant » en fin de vidéo."
     }
   ],
   "relancesProposees": [],
