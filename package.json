@@ -1,0 +1,12 @@
+{
+  "name": "agent-chariow",
+  "version": "1.0.0",
+  "description": "Tableau de bord web + agent IA pour automatiser la pub et la gestion d'une boutique Chariow (fichiers Excel FCFA). 100% gratuit.",
+  "type": "module",
+  "scripts": {
+    "agent": "node agent/run.js",
+    "serve": "node serve.js"
+  },
+  "engines": { "node": ">=18" },
+  "license": "MIT"
+}

@@ -1,0 +1,14 @@
+# Secrets — ne JAMAIS commiter
+.env
+.env.local
+
+# Dépendances (aucune obligatoire ici, mais au cas où)
+node_modules/
+
+# Système
+.DS_Store
+Thumbs.db
+
+# Fichiers temporaires de bureautique
+.~lock.*#
+~$*

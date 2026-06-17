@@ -1,0 +1,26 @@
+[
+  {
+    "id": "m1",
+    "titre": "Message de vente (présentation produit)",
+    "type": "vente",
+    "contenu": "Bonjour 👋, je vends un fichier Excel qui t'aide à gérer ta boutique en FCFA (stock, ventes, dépenses, bénéfices). Tout est automatique, tu remplis juste tes chiffres. Prix : {PRIX} FCFA. Tu veux que je t'envoie le lien ?"
+  },
+  {
+    "id": "m2",
+    "titre": "Relance client (panier non payé)",
+    "type": "relance",
+    "contenu": "Bonjour {NOM} 🙂, je vois que tu étais intéressé(e) par « {PRODUIT} » ({MONTANT} FCFA). Il est toujours dispo. Je peux te le réserver jusqu'à {DATE_LIMITE} si tu veux. On valide ?"
+  },
+  {
+    "id": "m3",
+    "titre": "Remerciement après achat",
+    "type": "vente",
+    "contenu": "Merci beaucoup pour ton achat de « {PRODUIT} » 🙏 ! Tu as reçu le fichier ? Si tu as une question pour l'utiliser, écris-moi, je t'explique. Et si ça te plaît, un petit partage à tes amis commerçants m'aiderait beaucoup 😊."
+  },
+  {
+    "id": "m4",
+    "titre": "Offre limitée (promo)",
+    "type": "vente",
+    "contenu": "🔥 Offre spéciale cette semaine : « {PRODUIT} » à {PRIX} FCFA au lieu du prix normal. Stock d'attention limité, l'offre se termine {DATE_LIMITE}. Je t'envoie le lien ?"
+  }
+]

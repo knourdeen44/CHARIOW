@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Agent Chariow — Tableau de bord</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: { 600: "#16794a", 700: "#0f5e39", 50: "#ecfbf3" },
+            amber: { 500: "#d97706", 50: "#fff7ed" },
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    [x-tab] { display: none; }
+    [x-tab].active { display: block; }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen">
+
+  <!-- En-tête -->
+  <header class="bg-brand-700 text-white">
+    <div class="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <div class="text-2xl">📊</div>
+        <div>
+          <h1 class="font-bold text-lg leading-tight">Agent Chariow</h1>
+          <p class="text-brand-50 text-xs">Pub & gestion automatisées — 100 % gratuit</p>
+        </div>
+      </div>
+      <div id="aiBadge" class="text-xs px-2 py-1 rounded-full bg-white/15"></div>
+    </div>
+  </header>
+
+  <!-- Navigation -->
+  <nav class="bg-white border-b sticky top-0 z-10 overflow-x-auto">
+    <div class="max-w-5xl mx-auto px-2 flex gap-1 text-sm whitespace-nowrap" id="tabs">
+      <button data-tab="produits"  class="tab-btn px-3 py-3 border-b-2 border-transparent">🛍️ Produits</button>
+      <button data-tab="ventes"    class="tab-btn px-3 py-3 border-b-2 border-transparent">📈 Ventes</button>
+      <button data-tab="pub"       class="tab-btn px-3 py-3 border-b-2 border-transparent">✨ Générateur pub</button>
+      <button data-tab="calendrier" class="tab-btn px-3 py-3 border-b-2 border-transparent">🗓️ Calendrier</button>
+      <button data-tab="messages"  class="tab-btn px-3 py-3 border-b-2 border-transparent">💬 Messages</button>
+      <button data-tab="memo"      class="tab-btn px-3 py-3 border-b-2 border-transparent">🔑 Mémo accès</button>
+      <button data-tab="activite"  class="tab-btn px-3 py-3 border-b-2 border-transparent">📜 Activité</button>
+      <button data-tab="reglages"  class="tab-btn px-3 py-3 border-b-2 border-transparent">⚙️ Réglages</button>
+    </div>
+  </nav>
+
+  <main class="max-w-5xl mx-auto px-4 py-6">
+
+    <!-- PRODUITS -->
+    <section x-tab="produits">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-xl font-bold">Mes produits</h2>
+        <div class="flex gap-2">
+          <button id="addProduct" class="bg-brand-600 hover:bg-brand-700 text-white text-sm px-3 py-2 rounded-lg">+ Ajouter</button>
+          <button data-export="products" class="text-sm px-3 py-2 rounded-lg border">⬇️ Exporter JSON</button>
+        </div>
+      </div>
+      <div id="productsList" class="grid sm:grid-cols-2 gap-3"></div>
+    </section>
+
+    <!-- VENTES -->
+    <section x-tab="ventes">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-xl font-bold">Suivi des ventes</h2>
+        <div class="flex gap-2">
+          <button id="addSale" class="bg-brand-600 hover:bg-brand-700 text-white text-sm px-3 py-2 rounded-lg">+ Vente</button>
+          <button data-export="sales" class="text-sm px-3 py-2 rounded-lg border">⬇️ Exporter JSON</button>
+        </div>
+      </div>
+      <div id="salesStats" class="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-5"></div>
+      <h3 class="font-semibold mb-2 text-sm text-slate-600">Ventes par produit</h3>
+      <div id="salesChart" class="space-y-2 mb-6"></div>
+      <h3 class="font-semibold mb-2 text-sm text-slate-600">Dernières ventes</h3>
+      <div id="salesList" class="bg-white rounded-xl border divide-y"></div>
+    </section>
+
+    <!-- GÉNÉRATEUR PUB -->
+    <section x-tab="pub">
+      <h2 class="text-xl font-bold mb-4">Générateur de publicité (IA)</h2>
+      <div class="bg-white rounded-xl border p-4 grid sm:grid-cols-3 gap-3 mb-4">
+        <label class="text-sm">Produit
+          <select id="adProduct" class="mt-1 w-full border rounded-lg p-2"></select>
+        </label>
+        <label class="text-sm">Plateforme
+          <select id="adPlatform" class="mt-1 w-full border rounded-lg p-2">
+            <option>TikTok</option><option>Facebook</option><option>WhatsApp Status</option>
+          </select>
+        </label>
+        <label class="text-sm">Angle
+          <select id="adAngle" class="mt-1 w-full border rounded-lg p-2">
+            <option value="avant-après">Avant-après</option>
+            <option value="témoignage">Témoignage</option>
+            <option value="démo">Démo</option>
+            <option value="question">Question</option>
+          </select>
+        </label>
+      </div>
+      <button id="genAd" class="bg-amber-500 hover:brightness-95 text-white px-4 py-2 rounded-lg font-medium">✨ Générer la pub</button>
+      <div id="adResult" class="mt-4"></div>
+    </section>
+
+    <!-- CALENDRIER -->
+    <section x-tab="calendrier">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-xl font-bold">Calendrier de publication</h2>
+        <button id="genPlan" class="bg-amber-500 hover:brightness-95 text-white text-sm px-3 py-2 rounded-lg">✨ Proposer la semaine</button>
+      </div>
+      <p class="text-sm text-slate-500 mb-3">L'agent propose quoi publier chaque jour. Coche « publié » quand c'est fait.</p>
+      <div id="calendar" class="space-y-2"></div>
+    </section>
+
+    <!-- MESSAGES -->
+    <section x-tab="messages">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-xl font-bold">Bibliothèque de messages</h2>
+        <div class="flex gap-2">
+          <button id="genRelance" class="bg-amber-500 hover:brightness-95 text-white text-sm px-3 py-2 rounded-lg">✨ Relance IA</button>
+          <button data-export="messages" class="text-sm px-3 py-2 rounded-lg border">⬇️ Exporter</button>
+        </div>
+      </div>
+      <div id="messagesList" class="space-y-3"></div>
+    </section>
+
+    <!-- MÉMO ACCÈS -->
+    <section x-tab="memo">
+      <h2 class="text-xl font-bold mb-4">Mémo accès & comptes</h2>
+      <div class="bg-white rounded-xl border p-4 space-y-4 text-sm leading-relaxed">
+        <div>
+          <h3 class="font-semibold">🛒 Chariow</h3>
+          <p>Ta boutique de vente des fichiers Excel. Garde le lien de chaque produit à jour dans la page <b>Produits</b> (champ « Lien Chariow »).</p>
+        </div>
+        <div>
+          <h3 class="font-semibold">📱 Réseaux sociaux</h3>
+          <p>Tu publies <b>manuellement</b> le contenu généré : TikTok, Facebook, WhatsApp Status. Le site prépare et planifie — il ne publie pas à ta place (et ne paie pas la pub).</p>
+        </div>
+        <div>
+          <h3 class="font-semibold">🤖 Clé IA (OpenRouter)</h3>
+          <p>Crée une clé gratuite sur <b>openrouter.ai/keys</b>, puis colle-la dans <b>Réglages</b>. Elle reste dans ton navigateur, jamais dans le code.</p>
+        </div>
+        <div>
+          <h3 class="font-semibold">⏰ Agent automatique (cron)</h3>
+          <p>Chaque matin, GitHub Actions lance l'agent qui prépare le contenu du jour. Mets la clé dans les <b>Secrets GitHub</b> (voir README). Tu verras les actions dans l'onglet <b>Activité</b>.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ACTIVITÉ -->
+    <section x-tab="activite">
+      <h2 class="text-xl font-bold mb-1">Journal d'activité</h2>
+      <p class="text-sm text-slate-500 mb-4">Tout ce que l'agent (et toi) avez fait. L'agent automatique écrit ici à chaque exécution.</p>
+      <div id="activityList" class="space-y-2"></div>
+    </section>
+
+    <!-- RÉGLAGES -->
+    <section x-tab="reglages">
+      <h2 class="text-xl font-bold mb-4">Réglages</h2>
+      <div class="bg-white rounded-xl border p-4 space-y-4 max-w-lg">
+        <label class="block text-sm">Clé API OpenRouter (reste dans ton navigateur)
+          <input id="setKey" type="password" placeholder="sk-or-..." class="mt-1 w-full border rounded-lg p-2" />
+        </label>
+        <label class="block text-sm">Modèle IA
+          <input id="setModel" type="text" placeholder="meta-llama/llama-3.3-70b-instruct:free" class="mt-1 w-full border rounded-lg p-2" />
+          <span class="text-xs text-slate-400">Laisse vide pour le modèle gratuit par défaut.</span>
+        </label>
+        <div class="flex gap-2">
+          <button id="saveSettings" class="bg-brand-600 text-white px-4 py-2 rounded-lg text-sm">Enregistrer</button>
+          <button id="resetData" class="border px-4 py-2 rounded-lg text-sm">↺ Revenir aux données du repo</button>
+        </div>
+        <p class="text-xs text-slate-500">Sans clé, le site fonctionne quand même en « mode sans IA » (modèles variés).</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Boîte de dialogue simple -->
+  <div id="modal" class="hidden fixed inset-0 bg-black/40 flex items-center justify-center p-4 z-20">
+    <div class="bg-white rounded-xl w-full max-w-md p-4">
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <div id="toast" class="hidden fixed bottom-4 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-sm px-4 py-2 rounded-lg z-30"></div>
+
+  <footer class="text-center text-xs text-slate-400 py-8">
+    Agent Chariow • Site statique gratuit • Données dans /data
+  </footer>
+
+  <script src="js/store.js"></script>
+  <script src="js/fallback.js"></script>
+  <script src="js/ai.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

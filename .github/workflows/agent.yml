@@ -1,0 +1,43 @@
+name: Agent Chariow (contenu du jour)
+
+# Quand l'agent tourne :
+#  - chaque matin à 06h00 (heure du Sénégal/UTC) via le cron
+#  - ou manuellement depuis l'onglet "Actions" de GitHub (bouton "Run workflow")
+on:
+  schedule:
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+
+# Autorise le workflow à recommiter data/queue.json et data/activity.json
+permissions:
+  contents: write
+
+jobs:
+  agent:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Récupérer le code
+        uses: actions/checkout@v4
+
+      - name: Installer Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Lancer l'agent
+        env:
+          # La clé vient des Secrets GitHub (Settings > Secrets and variables > Actions)
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+        run: node agent/run.js
+
+      - name: Sauvegarder le contenu généré
+        run: |
+          git config user.name "agent-chariow[bot]"
+          git config user.email "actions@github.com"
+          git add data/queue.json data/activity.json
+          if git diff --staged --quiet; then
+            echo "Aucun changement à commiter."
+          else
+            git commit -m "🤖 Contenu du jour ($(date +%F))"
+            git push
+          fi
