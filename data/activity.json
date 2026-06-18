@@ -1,3 +1,12 @@
 [
-  { "date": "2026-06-17T23:30:00.000Z", "acteur": "agent", "action": "Boutique « SAFE MONEY » connectée à Chariow. En attente de produits publiés pour synchroniser tes vraies ventes." }
+  {
+    "date": "2026-06-18T04:24:02.555Z",
+    "acteur": "agent",
+    "action": "Synchro Chariow : boutique connectée (SAFE MONEY) mais 0 produit publié — données conservées."
+  },
+  {
+    "date": "2026-06-17T23:30:00.000Z",
+    "acteur": "agent",
+    "action": "Boutique « SAFE MONEY » connectée à Chariow. En attente de produits publiés pour synchroniser tes vraies ventes."
+  }
 ]
