@@ -1,0 +1,65 @@
+name: Publication réseaux (Facebook + Instagram)
+
+# Publie la pub du jour sur Facebook + Instagram.
+#  - chaque jour à 08h00 UTC
+#  - ou manuellement (onglet Actions > Run workflow)
+# Ne publie que si les Secrets Meta sont configurés (sinon, étapes ignorées proprement).
+on:
+  schedule:
+    - cron: "0 8 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      # 1) Prépare la pub + génère l'image (pour Instagram)
+      - name: Préparer la publication
+        env:
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+        run: node agent/publish-meta.js prepare
+
+      # 2) Committe l'image pour qu'elle soit accessible publiquement (raw GitHub)
+      - name: Publier l'image (commit)
+        run: |
+          git config user.name "agent-chariow[bot]"
+          git config user.email "actions@github.com"
+          git add assets/ data/publish-pending.json 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "Rien à committer (pas d'image / pas de pub)."
+          else
+            git commit -m "🖼️ Image de publication ($(date +%F))"
+            git push
+          fi
+
+      # 3) Publie sur Facebook + Instagram
+      - name: Publier sur les réseaux
+        env:
+          META_PAGE_ID: ${{ secrets.META_PAGE_ID }}
+          META_PAGE_TOKEN: ${{ secrets.META_PAGE_TOKEN }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+        run: node agent/publish-meta.js post
+
+      # 4) Sauvegarde le journal + l'état "publié"
+      - name: Sauvegarder le journal
+        run: |
+          git config user.name "agent-chariow[bot]"
+          git config user.email "actions@github.com"
+          git add data/queue.json data/activity.json 2>/dev/null || true
+          rm -f data/publish-pending.json
+          git add data/publish-pending.json 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "Aucun changement."
+          else
+            git commit -m "🤖 Publication réseaux ($(date +%F))"
+            git push
+          fi

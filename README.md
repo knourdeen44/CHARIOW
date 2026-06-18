@@ -110,6 +110,18 @@ Toujours dans **✨ Générateur pub**, clique **🎬 Créer la vidéo**.
 
 ---
 
+## 2 quater) 📱 Publier automatiquement sur Facebook + Instagram (optionnel)
+
+L'agent peut publier ta pub du jour **tout seul** sur ta Page Facebook et ton compte Instagram Pro.
+- C'est **gratuit**, mais demande une configuration Meta (compte développeur). **Guide complet pas à pas : [docs/META_SETUP.md](docs/META_SETUP.md).**
+- Une fois les 3 secrets ajoutés (`META_PAGE_ID`, `META_PAGE_TOKEN`, `IG_USER_ID`), le workflow **Publication réseaux** s'occupe de tout (chaque jour à 08h, ou « Run workflow »).
+- Facebook = post texte. Instagram = image (générée côté serveur) + légende.
+- Sans ces secrets, rien n'est publié (le reste du projet fonctionne normalement).
+
+TikTok n'est pas encore branché (audit TikTok plus lourd) — possible dans un second temps.
+
+---
+
 ## 3) 🌍 Déployer gratuitement (GitHub Pages)
 
 1. Crée un compte sur **https://github.com** (gratuit).
